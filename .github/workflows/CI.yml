@@ -6,10 +6,7 @@ on:
 
   # 定时激活
   schedule:
-    - cron:  '0 5 * * *'
-      # 每30分钟：'30 * * * *'
-      # 每1小时：'* 1 * * *'
-      # ！最少5分钟
+    - cron:  '0 1 * * *'
 
 jobs:
   transport:
@@ -36,7 +33,7 @@ jobs:
             cd .
           fi
         env:
-          CURRENT_VERSION_API: https://api.upup.cool/repos/Purple-CSGO/CSGO-Config-Presets/version
+          CURRENT_VERSION_API: https://api.upup.cool/repos/Purple-CSGO/ffmpeg-gyan-release-builds/version
           TARGET_VERSION_API: https://www.gyan.dev/ffmpeg/builds/release-version
           FILE_1: https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z
           FILE_2: https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z
