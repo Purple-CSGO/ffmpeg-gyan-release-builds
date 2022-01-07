@@ -1,0 +1,53 @@
+name: release CI
+
+on:
+  # Push激活
+  push:
+
+  # 定时激活
+  schedule:
+    - cron:  '0 5 * * *'
+      # 每30分钟：'30 * * * *'
+      # 每1小时：'* 1 * * *'
+      # ！最少5分钟
+
+jobs:
+  transport:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # 获取对比版本，下载文件
+      - name: run
+        run: |
+          currentVersion=`curl $CURRENT_VERSION_API -q`
+          targetVersion=`curl $TARGET_VERSION_API -q`
+
+          if [ $currentVersion != $targetVersion ]
+          then
+            mkdir temp
+            cd temp
+            echo "Downloading File_1..."
+            wget $FILE_1 -q
+            echo "Downloading File_2..."
+            wget $FILE_2 -q
+            echo "CURRENT_VERSION=$currentVersion" >> $GITHUB_ENV
+            echo "TARGET_VERSION=$targetVersion" >> $GITHUB_ENV
+            cd .
+          fi
+        env:
+          CURRENT_VERSION_API: https://api.upup.cool/repos/Purple-CSGO/ffmpeg-gyan-release-builds/version
+          TARGET_VERSION_API: https://www.gyan.dev/ffmpeg/builds/release-version
+          FILE_1: https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z
+          FILE_2: https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z
+
+      # 发布release和上传文件
+      - name: release
+        uses: softprops/action-gh-release@v1
+        if: env.CURRENT_VERSION != env.TARGET_VERSION
+        with:
+          files: "temp/**"
+          tag_name: ${{ env.TARGET_VERSION }}
+          name: FFMPEG Builds ${{ env.TARGET_VERSION }}
+          body: All files are from https://www.gyan.dev/ffmpeg/
+          draft: false # 方便debug，设置true发布为草稿
