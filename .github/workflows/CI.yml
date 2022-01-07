@@ -36,7 +36,7 @@ jobs:
             cd .
           fi
         env:
-          CURRENT_VERSION_API: https://api.upup.cool/repos/Purple-CSGO/ffmpeg-gyan-release-builds/version
+          CURRENT_VERSION_API: https://api.upup.cool/repos/Purple-CSGO/CSGO-Config-Presets/version
           TARGET_VERSION_API: https://www.gyan.dev/ffmpeg/builds/release-version
           FILE_1: https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z
           FILE_2: https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z
